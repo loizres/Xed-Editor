@@ -48,6 +48,8 @@ import com.rk.resources.getFilledString
 import com.rk.resources.strings
 import com.rk.settings.Settings
 import com.rk.theme.XedTheme
+import com.rk.utils.VolumeKeyHandler.handleVolumeKey
+import com.rk.utils.VolumeScrollTarget
 import com.rk.utils.errorDialog
 import java.lang.ref.WeakReference
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -114,8 +116,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        // Keybindings (existing)
         val handledEvent = KeybindingsManager.handleGlobalEvent(event, this)
         if (handledEvent) return true
+
+        // Volume key scrolling
+        handleVolumeKey(event, Settings.enable_volume_scroll_editor) {
+                viewModel.tabs.getOrNull(viewModel.currentTabIndex) as? VolumeScrollTarget
+            }
+            ?.let {
+                return it
+            }
+
         return super.dispatchKeyEvent(event)
     }
 

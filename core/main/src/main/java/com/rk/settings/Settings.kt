@@ -84,6 +84,8 @@ object Settings {
     var extra_keys_bg by CachedPreference("extra_keys_bg", false)
     var auto_open_new_files by CachedPreference("auto_open_new_files", true)
     var return_to_app by CachedPreference("return_to_app", true)
+    var enable_volume_scroll_editor by CachedPreference("enable_volume_scroll_editor", false)
+    var enable_volume_scroll_terminal by CachedPreference("enable_volume_scroll_terminal", false)
 
     // Int settings
     var tab_size by CachedPreference("tabsize", 4)

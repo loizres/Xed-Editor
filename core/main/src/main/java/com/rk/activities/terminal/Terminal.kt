@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.view.KeyEvent
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -50,11 +51,13 @@ import com.rk.terminal.NEXT_STAGE
 import com.rk.terminal.SessionService
 import com.rk.terminal.TerminalBackEnd
 import com.rk.terminal.TerminalScreen
+import com.rk.terminal.asVolumeScrollTarget
 import com.rk.terminal.changeSession
 import com.rk.terminal.getNextStage
 import com.rk.terminal.getPwd
 import com.rk.terminal.terminalView
 import com.rk.theme.XedTheme
+import com.rk.utils.VolumeKeyHandler.handleVolumeKey
 import com.rk.utils.errorDialog
 import com.rk.utils.getTempDir
 import com.rk.utils.toast
@@ -156,6 +159,14 @@ class Terminal : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        handleVolumeKey(event, Settings.enable_volume_scroll_terminal) { terminalView.get()?.asVolumeScrollTarget() }
+            ?.let {
+                return it
+            }
+        return super.dispatchKeyEvent(event)
     }
 
     override fun onDestroy() {
